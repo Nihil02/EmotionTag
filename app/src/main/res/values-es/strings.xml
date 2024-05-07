@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btnTextCancel">Cancelar</string>
+    <string name="btnTextRecord">Grabar</string>
+    <string name="btnTextSave">Guardar</string>
+    <string name="btnTextAnalyze">Analizar</string>
+    <string name="lblEntryTitle">¿Cómo llamaremos a este día?</string>
+    <string name="lblEntryText">Cuentame sobre tu día</string>
+</resources>

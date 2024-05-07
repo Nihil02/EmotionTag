@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">EmotionTag</string>
+    <string name="app_name" translatable="false">EmotionTag</string>
+    <string name="btnTextCancel">Cancel</string>
+    <string name="btnTextRecord">Record</string>
+    <string name="btnTextSave">Save</string>
+    <string name="btnTextAnalyze">Analyze</string>
+    <string name="lblEntryTitle">How we will call this day?</string>
+    <string name="lblEntryText">Tell me about your day</string>
 </resources>
