@@ -12,20 +12,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.addEntryScreen
 import com.nihil.emotiontag.data.entriesScreen
 
 @Composable
-fun EntriesScreen(navController: NavController = NavController(LocalContext.current)) {
+fun EntriesScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Entries",
+            text = stringResource(R.string.scrTitleEntries),
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(16.dp))

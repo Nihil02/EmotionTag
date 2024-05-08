@@ -8,4 +8,10 @@
     <string name="lblEntryText">Cuentame sobre tu día</string>
     <string name="scrTitleEntries">Entradas</string>
     <string name="scrTitleAddEntry">Registrar Entrada</string>
+    <string name="emoJoy">Alegría</string>
+    <string name="emoSadness">Tristeza</string>
+    <string name="emoAnger">Enojo</string>
+    <string name="emoDisgust">Disgusto</string>
+    <string name="emoFear">Miedo</string>
+    <string name="emoSurprise">Sorpresa</string>
 </resources>

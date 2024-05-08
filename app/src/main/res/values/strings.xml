@@ -8,4 +8,10 @@
     <string name="lblEntryText">Tell me about your day</string>
     <string name="scrTitleEntries">Entries</string>
     <string name="scrTitleAddEntry">Add Entry</string>
+    <string name="emoJoy">Joy</string>
+    <string name="emoSadness">Sadness</string>
+    <string name="emoAnger">Anger</string>
+    <string name="emoDisgust">Disgust</string>
+    <string name="emoFear">Fear</string>
+    <string name="emoSurprise">Surprise</string>
 </resources>
