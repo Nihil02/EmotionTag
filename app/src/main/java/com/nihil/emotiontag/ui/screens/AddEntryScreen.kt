@@ -63,8 +63,10 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
     var isRecording by remember { mutableStateOf(false) }
     var isProcessing by remember { mutableStateOf(false) }
 
-    val isReady by derivedStateOf {
-        title.isNotBlank() && text.isNotBlank() && emotion != Emotions.NONE.value && emotion != Emotions.ERROR.value
+    val isReady by remember {
+        derivedStateOf {
+            title.isNotBlank() && text.isNotBlank() && emotion != Emotions.NONE.value && emotion != Emotions.ERROR.value
+        }
     }
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -85,7 +87,11 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
                 title = stringResource(id = R.string.scrTitleAddEntry),
                 onNavigationIconClick = {
                     if (!isProcessing) {
-                        navController.navigate(entriesScreen.title)
+                        navController.navigate(entriesScreen.title) {
+                            popUpTo(entriesScreen.title) {
+                                inclusive = true
+                            }
+                        }
                     }
                 })
         }
@@ -200,7 +206,11 @@ private fun saveToDatabase(
         getString(context, R.string.msgSavedToDatabase),
         Toast.LENGTH_SHORT
     ).show()
-    navController.navigate(entriesScreen.title)
+    navController.navigate(entriesScreen.title) {
+        popUpTo(entriesScreen.title) {
+            inclusive = true
+        }
+    }
 }
 
 @Composable
