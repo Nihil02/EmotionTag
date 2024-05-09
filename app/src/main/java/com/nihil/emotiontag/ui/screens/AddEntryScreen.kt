@@ -22,7 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,11 +39,16 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.nihil.emotiontag.R
+import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.data.entriesScreen
 import com.nihil.emotiontag.database.entities.EntryData
 import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.ui.components.TopBar
 import com.nihil.emotiontag.util.EmotionClassifier
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -54,14 +59,13 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
 
     var title by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
-    var emotion by remember { mutableStateOf("") }
-    var isReady by remember { mutableStateOf(false) }
+    var emotion by remember { mutableStateOf(Emotions.NONE.value) }
     var isRecording by remember { mutableStateOf(false) }
+    var isProcessing by remember { mutableStateOf(false) }
 
-    LaunchedEffect(title, text, emotion) {
-        isReady = title.isNotBlank() && text.isNotBlank() && emotion.isNotBlank()
+    val isReady by derivedStateOf {
+        title.isNotBlank() && text.isNotBlank() && emotion != Emotions.NONE.value && emotion != Emotions.ERROR.value
     }
-
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { result ->
@@ -80,7 +84,9 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
             TopBar(
                 title = stringResource(id = R.string.scrTitleAddEntry),
                 onNavigationIconClick = {
-                    navController.navigate(entriesScreen.title)
+                    if (!isProcessing) {
+                        navController.navigate(entriesScreen.title)
+                    }
                 })
         }
     ) { innerPadding ->
@@ -125,7 +131,11 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
                     Text(stringResource(R.string.btnTextRecord))
                 }
 
-                Text(text = emotion)
+                if (isProcessing) {
+                    Text(stringResource(R.string.lblEntryEmotionProcessing))
+                } else {
+                    Text(getEmotionText(emotion))
+                }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
@@ -133,14 +143,23 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
                             val entry = EntryData(title = title, text = text, emotion = emotion)
                             saveToDatabase(entryViewModel, entry, context, navController)
                         },
-                        enabled = isReady
+                        enabled = isReady && !isProcessing
                     ) {
                         Text(stringResource(R.string.btnTextSave))
                     }
-                    Button(onClick = {
-                        emotion = EmotionClassifier(context).analyze(text)
-                        isReady = true
-                    }) {
+                    Button(
+                        onClick = {
+                            isProcessing = true
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val analyzedEmotion = EmotionClassifier(context).analyze(text)
+                                withContext(Dispatchers.Main) {
+                                    emotion = analyzedEmotion.value
+                                    isProcessing = false
+                                }
+                            }
+                        },
+                        enabled = !isProcessing
+                    ) {
                         Text(stringResource(R.string.btnTextAnalyze))
                     }
                 }
@@ -182,4 +201,19 @@ private fun saveToDatabase(
         Toast.LENGTH_SHORT
     ).show()
     navController.navigate(entriesScreen.title)
+}
+
+@Composable
+fun getEmotionText(emotion: Int): String {
+    return when (emotion) {
+        Emotions.JOY.value -> stringResource(R.string.emoJoy)
+        Emotions.SADNESS.value -> stringResource(R.string.emoSadness)
+        Emotions.ANGER.value -> stringResource(R.string.emoAnger)
+        Emotions.DISGUST.value -> stringResource(R.string.emoDisgust)
+        Emotions.FEAR.value -> stringResource(R.string.emoFear)
+        Emotions.SURPRISE.value -> stringResource(R.string.emoSurprise)
+        Emotions.NON_DOMINANT.value -> stringResource(R.string.emoNonDominant)
+        Emotions.NONE.value -> stringResource(R.string.emoNone)
+        else -> Emotions.ERROR.name
+    }
 }

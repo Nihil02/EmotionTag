@@ -11,6 +11,6 @@ data class EntryData(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     @ColumnInfo(name = "title") val title: String = "",
     @ColumnInfo(name = "text") val text: String = "",
-    @ColumnInfo(name = "emotion") val emotion: String = "",
+    @ColumnInfo(name = "emotion") val emotion: Int = 0,
     @ColumnInfo(name = "date") val date: String = LocalDate.now().toString()
 )

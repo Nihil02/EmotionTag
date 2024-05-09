@@ -17,4 +17,7 @@
     <string name="lblEntriesNoList">No entries in this diary\n\nTell me something about your day!</string>
     <string name="msgSavedToDatabase">Saved</string>
     <string name="msgFailedToSaved">Failed to save :(</string>
+    <string name="lblEntryEmotionProcessing">Processing...</string>
+    <string name="emoNonDominant">Non dominant emotion</string>
+    <string name="emoNone">None</string>
 </resources>

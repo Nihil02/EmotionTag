@@ -1,10 +1,11 @@
 package com.nihil.emotiontag.util
 
 import android.content.Context
-import java.nio.charset.StandardCharsets
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.nihil.emotiontag.data.Emotions
 import java.io.IOException
+import java.nio.charset.StandardCharsets
 
 data class EmotionScores(
     val word: String,
@@ -20,6 +21,15 @@ class EmotionClassifier(private val context: Context) {
     private val gson = Gson()
     private val emotionListType = object : TypeToken<List<EmotionScores>>() {}.type
 
+    companion object {
+        const val JOY = "joy"
+        const val SADNESS = "sadness"
+        const val ANGER = "anger"
+        const val DISGUST = "disgust"
+        const val FEAR = "fear"
+        const val SURPRISE = "surprise"
+    }
+
     private fun loadDictionary(): List<EmotionScores>? {
         return try {
             context.assets.open("data-spa.json").use { inputStream ->
@@ -27,34 +37,45 @@ class EmotionClassifier(private val context: Context) {
                 gson.fromJson(jsonString, emotionListType)
             }
         } catch (e: IOException) {
-            println("Error reading the file: ${e.message}")
+            println("Error: ${e.message}")
             null
         }
     }
 
-    fun analyze(text: String): String {
-        val dictionary = loadDictionary() ?: return "Error loading dictionary"
+    fun analyze(text: String): Emotions {
+        val dictionary = loadDictionary() ?: return Emotions.ERROR
         val words = text.lowercase().split("\\s+".toRegex())
         val totalScores = mutableMapOf(
-            "joy" to 0.0,
-            "sadness" to 0.0,
-            "anger" to 0.0,
-            "disgust" to 0.0,
-            "fear" to 0.0,
-            "surprise" to 0.0
+            JOY to 0.0, SADNESS to 0.0, ANGER to 0.0, DISGUST to 0.0, FEAR to 0.0, SURPRISE to 0.0
         )
 
         words.forEach { word ->
             dictionary.find { it.word == word }?.let { scores ->
-                totalScores["joy"] = totalScores["joy"]!! + scores.joy
-                totalScores["sadness"] = totalScores["sadness"]!! + scores.sadness
-                totalScores["anger"] = totalScores["anger"]!! + scores.anger
-                totalScores["disgust"] = totalScores["disgust"]!! + scores.disgust
-                totalScores["fear"] = totalScores["fear"]!! + scores.fear
-                totalScores["surprise"] = totalScores["surprise"]!! + scores.surprise
+                totalScores[JOY] = totalScores[JOY]!! + scores.joy
+                totalScores[SADNESS] = totalScores[SADNESS]!! + scores.sadness
+                totalScores[ANGER] = totalScores[ANGER]!! + scores.anger
+                totalScores[DISGUST] = totalScores[DISGUST]!! + scores.disgust
+                totalScores[FEAR] = totalScores[FEAR]!! + scores.fear
+                totalScores[SURPRISE] = totalScores[SURPRISE]!! + scores.surprise
             }
         }
 
-        return totalScores.maxByOrNull { it.value }?.key ?: "No dominant emotion"
+        val max = totalScores.maxByOrNull { it.value }?.key
+        val min = totalScores.minByOrNull { it.value }?.key
+
+        return if (max != min) {
+            when (max) {
+                JOY -> Emotions.JOY
+                SADNESS -> Emotions.SADNESS
+                ANGER -> Emotions.ANGER
+                DISGUST -> Emotions.DISGUST
+                FEAR -> Emotions.FEAR
+                SURPRISE -> Emotions.SURPRISE
+
+                else -> Emotions.ERROR
+            }
+        } else {
+            Emotions.NON_DOMINANT
+        }
     }
 }

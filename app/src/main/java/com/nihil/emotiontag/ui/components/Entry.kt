@@ -31,7 +31,11 @@ fun Entry(entryData: EntryData) {
             .height(180.dp)
             .fillMaxWidth(),
         onClick = {
-            Toast.makeText(context, entryData.id.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                entryData.emotion.toString() + "\n" + entryData.id.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
         },
     ) {
         Column(
