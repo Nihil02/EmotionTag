@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.nihil.emotiontag.R
-import com.nihil.emotiontag.data.addEntryScreen
+import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.ui.components.EntriesList
 import com.nihil.emotiontag.ui.components.TopBar
@@ -29,7 +29,7 @@ fun EntriesScreen(navController: NavController, entryViewModel: EntryViewModel) 
         topBar = { TopBar(title = stringResource(R.string.scrTitleEntries)) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(addEntryScreen.title) },
+                onClick = { navController.navigate(ScreenData.AddEntryScreen.title) },
             ) {
                 Icon(Icons.Filled.Add, "Add an entry")
             }
