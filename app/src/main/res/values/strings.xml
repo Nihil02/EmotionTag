@@ -14,4 +14,5 @@
     <string name="emoDisgust">Disgust</string>
     <string name="emoFear">Fear</string>
     <string name="emoSurprise">Surprise</string>
+    <string name="lblEntriesNoList">No entries in this diary\n\nTell me something about your day!</string>
 </resources>
