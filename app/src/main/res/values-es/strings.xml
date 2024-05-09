@@ -15,4 +15,6 @@
     <string name="emoFear">Miedo</string>
     <string name="emoSurprise">Sorpresa</string>
     <string name="lblEntriesNoList">No hay entradas en este diario\n\n¡Cuentame algo sobre tu día!</string>
+    <string name="msgSavedToDatabase">Guardado</string>
+    <string name="msgFailedToSaved">No guardado :(</string>
 </resources>

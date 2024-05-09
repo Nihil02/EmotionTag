@@ -2,25 +2,27 @@ package com.nihil.emotiontag.ui.screens
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.speech.RecognizerIntent
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,29 +32,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.nihil.emotiontag.R
-import com.nihil.emotiontag.data.EntryData
 import com.nihil.emotiontag.data.entriesScreen
+import com.nihil.emotiontag.database.entities.EntryData
+import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.ui.components.TopBar
 import com.nihil.emotiontag.util.EmotionClassifier
 import java.util.Locale
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun AddEntryScreen(navController: NavController) {
+fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel) {
     val speechPermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
     val context = LocalContext.current
 
     var title by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
-    var emotion by remember { mutableStateOf("No se ha analizado el sentimiento") }
-    var ready by remember { mutableStateOf(false) }
+    var emotion by remember { mutableStateOf("") }
+    var isReady by remember { mutableStateOf(false) }
     var isRecording by remember { mutableStateOf(false) }
+
+    LaunchedEffect(title, text, emotion) {
+        isReady = title.isNotBlank() && text.isNotBlank() && emotion.isNotBlank()
+    }
 
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -82,15 +90,18 @@ fun AddEntryScreen(navController: NavController) {
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(50.dp)
+            ) {
                 TextField(
                     value = title,
                     onValueChange = { title = it },
                     label = { Text(stringResource(R.string.lblEntryTitle)) },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f),
                     singleLine = true
                 )
-
-                Spacer(modifier = Modifier.height(30.dp))
 
                 TextField(
                     placeholder = { Text("") },
@@ -101,8 +112,6 @@ fun AddEntryScreen(navController: NavController) {
                         .fillMaxWidth(0.9f)
                         .height(150.dp)
                 )
-
-                Spacer(modifier = Modifier.height(50.dp))
 
                 Button(
                     modifier = Modifier.fillMaxWidth(0.6f),
@@ -116,20 +125,22 @@ fun AddEntryScreen(navController: NavController) {
                     Text(stringResource(R.string.btnTextRecord))
                 }
 
-                Spacer(modifier = Modifier.height(50.dp))
-
                 Text(text = emotion)
 
-                Spacer(modifier = Modifier.height(50.dp))
-
-                Row {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
-                        onClick = { EntryData(title, text, emotion) }, enabled = ready
+                        onClick = {
+                            val entry = EntryData(title = title, text = text, emotion = emotion)
+                            saveToDatabase(entryViewModel, entry, context, navController)
+                        },
+                        enabled = isReady
                     ) {
                         Text(stringResource(R.string.btnTextSave))
                     }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Button(onClick = { emotion = EmotionClassifier(context).analyze(text) }) {
+                    Button(onClick = {
+                        emotion = EmotionClassifier(context).analyze(text)
+                        isReady = true
+                    }) {
                         Text(stringResource(R.string.btnTextAnalyze))
                     }
                 }
@@ -156,4 +167,19 @@ fun speechRecognition(
         }
         activityResultLauncher.launch(intent)
     }
+}
+
+private fun saveToDatabase(
+    entryViewModel: EntryViewModel,
+    entry: EntryData,
+    context: Context,
+    navController: NavController
+) {
+    entryViewModel.insertEntry(entry)
+    Toast.makeText(
+        context,
+        getString(context, R.string.msgSavedToDatabase),
+        Toast.LENGTH_SHORT
+    ).show()
+    navController.navigate(entriesScreen.title)
 }

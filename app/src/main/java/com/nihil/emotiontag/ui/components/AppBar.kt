@@ -2,7 +2,6 @@ package com.nihil.emotiontag.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.nihil.emotiontag.R
-import com.nihil.emotiontag.data.EntryData
+import com.nihil.emotiontag.database.entities.EntryData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,13 +118,13 @@ fun Preview_AppBar(
                 .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ) {
-            val datos = listOf(
-                EntryData("Titulo", "Texto", ""),
-                EntryData("Titulo2", "Texto", "")
+            EntriesList(
+                listOf(
+                    EntryData(title = "Hola", text = "Texto de prueba"),
+                    EntryData(title = "Hola", text = "Texto de prueba")
+                )
             )
-            Column(modifier = Modifier.fillMaxHeight()) {
-                EntriesList(datos)
-            }
+
         }
     }
 }
