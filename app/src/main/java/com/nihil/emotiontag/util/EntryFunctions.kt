@@ -5,31 +5,22 @@ import android.speech.RecognizerIntent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.Emotions
 import java.util.Locale
 
-@OptIn(ExperimentalPermissionsApi::class)
 fun speechRecognition(
-    activityResultLauncher: ActivityResultLauncher<Intent>,
-    speechPermissionState: PermissionState
+    activityResultLauncher: ActivityResultLauncher<Intent>
 ) {
-    if (!speechPermissionState.status.isGranted) {
-        speechPermissionState.launchPermissionRequest()
-    } else {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-            putExtra(RecognizerIntent.EXTRA_PROMPT, "Di algo")
-        }
-        activityResultLauncher.launch(intent)
+    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+        putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        putExtra(RecognizerIntent.EXTRA_PROMPT, "Di algo")
     }
+    activityResultLauncher.launch(intent)
 }
 
 @Composable

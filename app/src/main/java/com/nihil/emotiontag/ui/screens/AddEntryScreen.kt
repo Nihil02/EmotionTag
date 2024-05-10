@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.Emotions
@@ -64,6 +66,7 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
             title.isNotBlank() && text.isNotBlank() && emotion != Emotions.NONE.value && emotion != Emotions.ERROR.value
         }
     }
+
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { result ->
@@ -76,6 +79,12 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
             isRecording = false
         }
     )
+
+    LaunchedEffect(speechPermissionState.status.isGranted) {
+        if (speechPermissionState.status.isGranted) {
+            speechRecognition(activityResultLauncher)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -125,8 +134,12 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
                     modifier = Modifier.fillMaxWidth(0.6f),
                     onClick = {
                         if (!isRecording) {
-                            speechRecognition(activityResultLauncher, speechPermissionState)
-                            isRecording = true
+                            if (speechPermissionState.status.isGranted) {
+                                speechRecognition(activityResultLauncher)
+                                isRecording = true
+                            } else {
+                                speechPermissionState.launchPermissionRequest()
+                            }
                         }
                     }
                 ) {
