@@ -17,7 +17,10 @@
     <string name="lblEntriesNoList">No hay entradas en este diario\n\n¡Cuentame algo sobre tu día!</string>
     <string name="msgSavedToDatabase">Guardado</string>
     <string name="msgFailedToSaved">No guardado :(</string>
-    <string name="lblEntryEmotionProcessing">Procesando...</string>
+    <string name="lblEntryEmotionProcessing">Procesando…</string>
     <string name="emoNonDominant">Sin emoción dominante</string>
     <string name="emoNone">Sin analizar</string>
+    <string name="lblEntryLoading">Recordando…</string>
+    <string name="lblEntryShowEmotion">"Ese día sentiste: "</string>
+    <string name="srcTitleShowEntry">Una preciosa memoria</string>
 </resources>

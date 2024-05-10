@@ -9,18 +9,15 @@ import java.util.UUID
 class EntryRepository(private val entryDao: EntryDao) {
     val entries: Flow<List<EntryData>> = entryDao.getAllEntries()
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun getEntryById(id: UUID): EntryData {
+    fun getEntryById(id: UUID): Flow<EntryData> {
         return entryDao.getEntryById(id)
     }
 
-    @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insertEntry(entryData: EntryData) {
         entryDao.insertEntry(entryData)
     }
-    @Suppress("RedundantSuspendModifier")
+
     @WorkerThread
     suspend fun updateEntry(entryData: EntryData) {
         entryDao.updateEntry(entryData)

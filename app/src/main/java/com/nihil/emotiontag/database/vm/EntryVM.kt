@@ -6,19 +6,27 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.nihil.emotiontag.database.entities.EntryData
 import com.nihil.emotiontag.database.repository.EntryRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 class EntryViewModel(private val repository: EntryRepository) : ViewModel() {
     val entries = repository.entries.asLiveData()
 
-    suspend fun getEntryById(id: UUID): EntryData? {
-        return repository.getEntryById(id)
-    }
+    fun getEntryById(id: UUID): StateFlow<EntryData?> = repository.getEntryById(id)
+        .distinctUntilChanged().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(1000),
+            initialValue = null
+        )
 
     fun insertEntry(entryData: EntryData) = viewModelScope.launch {
         repository.insertEntry(entryData)
     }
+
     fun updateEntry(entryData: EntryData) = viewModelScope.launch {
         repository.updateEntry(entryData)
     }

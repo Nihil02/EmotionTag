@@ -1,6 +1,8 @@
 package com.nihil.emotiontag.ui.components
 
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +20,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.entities.EntryData
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Entry(entryData: EntryData) {
+fun Entry(entryData: EntryData, navController: NavController) {
     val context = LocalContext.current
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -29,14 +34,19 @@ fun Entry(entryData: EntryData) {
         ),
         modifier = Modifier
             .height(180.dp)
-            .fillMaxWidth(),
-        onClick = {
-            Toast.makeText(
-                context,
-                entryData.emotion.toString() + "\n" + entryData.id.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
-        },
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = { navController.navigate(ScreenData.ShowEntryScreen.title + "/" + entryData.id.toString() + "") },
+                onLongClick = {
+                    Toast
+                        .makeText(
+                            context,
+                            "TODO for edit and delete",
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
+                },
+            ),
     ) {
         Column(
             modifier = Modifier

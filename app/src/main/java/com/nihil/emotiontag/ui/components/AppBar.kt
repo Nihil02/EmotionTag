@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.database.entities.EntryData
 
@@ -50,7 +51,7 @@ fun TopBar(
             if (onNavigationIconClick != null) {
                 IconButton(onClick = onNavigationIconClick) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Return"
                     )
                 }
@@ -122,9 +123,9 @@ fun Preview_AppBar(
                 listOf(
                     EntryData(title = "Hola", text = "Texto de prueba"),
                     EntryData(title = "Hola", text = "Texto de prueba")
-                )
+                ),
+                rememberNavController()
             )
-
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.nihil.emotiontag.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,7 +15,7 @@ interface EntryDao {
     fun getAllEntries(): Flow<List<EntryData>>
 
     @Query("SELECT * FROM entrydata WHERE id LIKE :id")
-    fun getEntryById(id: UUID): EntryData
+    fun getEntryById(id: UUID): Flow<EntryData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntry(entry: EntryData)
