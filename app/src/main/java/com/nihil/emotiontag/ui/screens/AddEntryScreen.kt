@@ -80,12 +80,6 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
         }
     )
 
-    LaunchedEffect(speechPermissionState.status.isGranted) {
-        if (speechPermissionState.status.isGranted) {
-            speechRecognition(activityResultLauncher)
-        }
-    }
-
     Scaffold(
         topBar = {
             TopBar(
