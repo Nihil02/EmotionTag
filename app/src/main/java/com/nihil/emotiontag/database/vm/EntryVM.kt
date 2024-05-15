@@ -1,5 +1,6 @@
 package com.nihil.emotiontag.database.vm
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -16,12 +17,9 @@ import java.util.UUID
 class EntryViewModel(private val repository: EntryRepository) : ViewModel() {
     val entries = repository.entries.asLiveData()
 
-    fun getEntryById(id: UUID): StateFlow<EntryData?> = repository.getEntryById(id)
-        .distinctUntilChanged().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(1000),
-            initialValue = null
-        )
+    fun getEntryById(id: UUID): LiveData<EntryData> {
+        return repository.getEntryById(id).asLiveData()
+    }
 
     fun insertEntry(entryData: EntryData) = viewModelScope.launch {
         repository.insertEntry(entryData)

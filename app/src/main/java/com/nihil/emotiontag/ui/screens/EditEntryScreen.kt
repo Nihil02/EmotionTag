@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,7 +55,7 @@ import java.util.UUID
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun EditEntryScreen(navController: NavController, entryViewModel: EntryViewModel, id: String) {
-    val entry by entryViewModel.getEntryById(UUID.fromString(id)).collectAsState()
+    val entry by entryViewModel.getEntryById(UUID.fromString(id)).observeAsState()
 
     val speechPermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
     val context = LocalContext.current
@@ -66,11 +67,7 @@ fun EditEntryScreen(navController: NavController, entryViewModel: EntryViewModel
             entry?.emotion ?: Emotions.NONE.value
         )
     }
-    val (date, _) = remember(entry) {
-        mutableStateOf(
-            entry?.date ?: LocalDate.now().toString()
-        )
-    }
+    val date = entry?.date ?: LocalDate.now().toString()
     var isRecording by remember { mutableStateOf(false) }
     var isProcessing by remember { mutableStateOf(false) }
 

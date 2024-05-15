@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,7 +28,7 @@ import java.util.UUID
 
 @Composable
 fun ShowEntryScreen(navController: NavController, entryViewModel: EntryViewModel, id: String) {
-    val entry by entryViewModel.getEntryById(UUID.fromString(id)).collectAsState()
+    val entry by entryViewModel.getEntryById(UUID.fromString(id)).observeAsState()
 
     Scaffold(
         topBar = {
