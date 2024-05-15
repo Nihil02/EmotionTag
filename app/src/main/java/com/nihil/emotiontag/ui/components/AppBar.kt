@@ -102,30 +102,3 @@ fun BottomBar() {
         }
     )
 }
-
-
-@Preview
-@Composable
-fun Preview_AppBar(
-) {
-    Scaffold(
-        topBar = { TopBar(title = "Test") },
-        bottomBar = { BottomBar() }
-    )
-    { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            EntriesList(
-                listOf(
-                    EntryData(title = "Hola", text = "Texto de prueba"),
-                    EntryData(title = "Hola", text = "Texto de prueba")
-                ),
-                rememberNavController()
-            )
-        }
-    }
-}

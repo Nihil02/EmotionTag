@@ -19,7 +19,7 @@ class EntryRepository(private val entryDao: EntryDao) {
     }
 
     @WorkerThread
-    suspend fun updateEntry(entryData: EntryData) {
-        entryDao.updateEntry(entryData)
+    suspend fun deleteEntry(entryData: EntryData) {
+        entryDao.deleteEntry(entryData)
     }
 }

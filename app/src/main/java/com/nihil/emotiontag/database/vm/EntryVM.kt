@@ -25,8 +25,8 @@ class EntryViewModel(private val repository: EntryRepository) : ViewModel() {
         repository.insertEntry(entryData)
     }
 
-    fun updateEntry(entryData: EntryData) = viewModelScope.launch {
-        repository.updateEntry(entryData)
+    fun deleteEntry(entryData: EntryData) = viewModelScope.launch {
+        repository.deleteEntry(entryData)
     }
 }
 

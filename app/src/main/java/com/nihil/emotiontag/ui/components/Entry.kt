@@ -1,5 +1,6 @@
 package com.nihil.emotiontag.ui.components
 
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,17 +33,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nihil.emotiontag.EmotionTagApplication
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.entities.EntryData
+import com.nihil.emotiontag.database.vm.EntryViewModel
+import com.nihil.emotiontag.database.vm.EntryViewModelFactory
+import com.nihil.emotiontag.util.deleteFromDatabase
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun Entry(entryData: EntryData, navController: NavController) {
+fun Entry(entryData: EntryData, navController: NavController, entryViewModel: EntryViewModel) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -115,11 +122,12 @@ fun Entry(entryData: EntryData, navController: NavController) {
                         }
 
                         TextButton(onClick = {
-                            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            scope.launch { sheetState.hide()
+                            }.invokeOnCompletion {
                                 if (!sheetState.isVisible) {
                                     showBottomSheet = false
-                                    /* TODO: Add a delete function */
                                 }
+                                deleteFromDatabase(entryViewModel, entryData, context)
                             }
                         }) {
                             Text(stringResource(id = R.string.btnModalDelete))

@@ -41,7 +41,7 @@ fun EntriesScreen(navController: NavController, entryViewModel: EntryViewModel) 
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            EntriesList(entries, navController)
+            EntriesList(entries, navController, entryViewModel)
         }
     }
 }

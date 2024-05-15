@@ -1,6 +1,7 @@
 package com.nihil.emotiontag.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -20,6 +21,6 @@ interface EntryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntry(entry: EntryData)
 
-    @Update
-    suspend fun updateEntry(entry: EntryData)
+    @Delete
+    suspend fun deleteEntry(entry: EntryData)
 }

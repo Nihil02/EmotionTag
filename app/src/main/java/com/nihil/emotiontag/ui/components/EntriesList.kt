@@ -19,10 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nihil.emotiontag.R
+import com.nihil.emotiontag.database.dao.EntryDao
 import com.nihil.emotiontag.database.entities.EntryData
+import com.nihil.emotiontag.database.repository.EntryRepository
+import com.nihil.emotiontag.database.vm.EntryViewModel
 
 @Composable
-fun EntriesList(entries: List<EntryData>, navController: NavController) {
+fun EntriesList(entries: List<EntryData>, navController: NavController, entryViewModel: EntryViewModel) {
     if (entries.isEmpty()) {
         Box(
             modifier = Modifier
@@ -43,20 +46,8 @@ fun EntriesList(entries: List<EntryData>, navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(entries) { entry ->
-                Entry(entry, navController)
+                Entry(entry, navController, entryViewModel)
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun Preview_List() {
-    EntriesList(
-        entries = listOf(
-            EntryData(title = "Hola", text = "Texto de prueba"),
-            EntryData(title = "Hola", text = "Texto de prueba")
-        ),
-        rememberNavController()
-    )
 }

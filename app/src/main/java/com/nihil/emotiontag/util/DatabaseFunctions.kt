@@ -27,3 +27,16 @@ fun saveToDatabase(
         }
     }
 }
+
+fun deleteFromDatabase(
+    entryViewModel: EntryViewModel,
+    entry: EntryData,
+    context: Context
+) {
+    entryViewModel.deleteEntry(entry)
+    Toast.makeText(
+        context,
+        ContextCompat.getString(context, R.string.msgDeletedFromDatabase),
+        Toast.LENGTH_SHORT
+    ).show()
+}
