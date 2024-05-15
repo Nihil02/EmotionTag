@@ -13,6 +13,7 @@ import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.database.vm.EntryViewModelFactory
 import com.nihil.emotiontag.ui.screens.AddEntryScreen
+import com.nihil.emotiontag.ui.screens.EditEntryScreen
 import com.nihil.emotiontag.ui.screens.EntriesScreen
 import com.nihil.emotiontag.ui.screens.ShowEntryScreen
 import com.nihil.emotiontag.ui.theme.EmotionTagTheme
@@ -49,6 +50,20 @@ class MainActivity : ComponentActivity() {
                     ) {
                         it.arguments?.getString("id")?.let { id ->
                             ShowEntryScreen(
+                                navController,
+                                entryViewModel,
+                                id
+                            )
+                        }
+                    }
+                    composable(
+                        ScreenData.UpdateEntryScreen.title + "/{id}",
+                        arguments = listOf(navArgument(name = "id") {
+                            type = NavType.StringType
+                        })
+                    ) {
+                        it.arguments?.getString("id")?.let { id ->
+                            EditEntryScreen(
                                 navController,
                                 entryViewModel,
                                 id

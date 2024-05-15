@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Components-->
     <string name="btnTextCancel">Cancelar</string>
     <string name="btnTextRecord">Grabar</string>
     <string name="btnTextSave">Guardar</string>
     <string name="btnTextAnalyze">Analizar</string>
     <string name="lblEntryTitle">¿Cómo llamaremos a este día?</string>
     <string name="lblEntryText">Cuentame sobre tu día</string>
+    <string name="lblEntriesNoList">No hay entradas en este diario\n\n¡Cuentame algo sobre tu día!</string>
+    <string name="lblEntryEmotionProcessing">Procesando…</string>
+    <string name="lblEntryLoading">Recordando…</string>
+    <string name="lblEntryShowEmotion">"Ese día sentiste: "</string>
+    <string name="srcTitleShowEntry">Una preciosa memoria</string>
+    <string name="btnModalEdit">Editar</string>
+    <string name="btnModalDelete">Borrar</string>
+
+    <!--Screen names-->
     <string name="scrTitleEntries">Entradas</string>
     <string name="scrTitleAddEntry">Registrar Entrada</string>
+    <string name="scrTitleEditEntry">Edit Entry</string>
+
+    <!--Emotions-->
     <string name="emoJoy">Alegría</string>
     <string name="emoSadness">Tristeza</string>
     <string name="emoAnger">Enojo</string>
     <string name="emoDisgust">Disgusto</string>
     <string name="emoFear">Miedo</string>
     <string name="emoSurprise">Sorpresa</string>
-    <string name="lblEntriesNoList">No hay entradas en este diario\n\n¡Cuentame algo sobre tu día!</string>
-    <string name="msgSavedToDatabase">Guardado</string>
-    <string name="msgFailedToSaved">No guardado :(</string>
-    <string name="lblEntryEmotionProcessing">Procesando…</string>
     <string name="emoNonDominant">Sin emoción dominante</string>
     <string name="emoNone">Sin analizar</string>
-    <string name="lblEntryLoading">Recordando…</string>
-    <string name="lblEntryShowEmotion">"Ese día sentiste: "</string>
-    <string name="srcTitleShowEntry">Una preciosa memoria</string>
+
+    <!--MSG-->
+    <string name="msgSavedToDatabase">Guardado</string>
+    <string name="msgFailedToSaved">No guardado :(</string>
 </resources>

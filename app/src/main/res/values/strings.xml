@@ -1,26 +1,37 @@
 <resources>
     <string name="app_name" translatable="false">EmotionTag</string>
+
+    <!--Components-->
     <string name="btnTextCancel">Cancel</string>
     <string name="btnTextRecord">Record</string>
     <string name="btnTextSave">Save</string>
     <string name="btnTextAnalyze">Analyze</string>
     <string name="lblEntryTitle">How we will call this day?</string>
     <string name="lblEntryText">Tell me about your day</string>
+    <string name="lblEntriesNoList">No entries in this diary\n\nTell me something about your day!</string>
+    <string name="lblEntryEmotionProcessing">Processing…</string>
+    <string name="lblEntryLoading">Remembering…</string>
+    <string name="lblEntryShowEmotion">"That day you felt: "</string>
+    <string name="srcTitleShowEntry">A precious memory</string>
+    <string name="btnModalEdit">Edit</string>
+    <string name="btnModalDelete">Delete</string>
+
+    <!--Screen names-->
     <string name="scrTitleEntries">Entries</string>
     <string name="scrTitleAddEntry">Add Entry</string>
+    <string name="scrTitleEditEntry">Edit Entry</string>
+
+    <!--Emotions-->
     <string name="emoJoy">Joy</string>
     <string name="emoSadness">Sadness</string>
     <string name="emoAnger">Anger</string>
     <string name="emoDisgust">Disgust</string>
     <string name="emoFear">Fear</string>
     <string name="emoSurprise">Surprise</string>
-    <string name="lblEntriesNoList">No entries in this diary\n\nTell me something about your day!</string>
-    <string name="msgSavedToDatabase">Saved</string>
-    <string name="msgFailedToSaved">Failed to save :(</string>
-    <string name="lblEntryEmotionProcessing">Processing…</string>
     <string name="emoNonDominant">Non dominant emotion</string>
     <string name="emoNone">None</string>
-    <string name="lblEntryLoading">Remembering…</string>
-    <string name="lblEntryShowEmotion">"That day you felt: "</string>
-    <string name="srcTitleShowEntry">A precious memory</string>
+
+    <!--MSG-->
+    <string name="msgSavedToDatabase">Saved</string>
+    <string name="msgFailedToSaved">Failed to save :(</string>
 </resources>
