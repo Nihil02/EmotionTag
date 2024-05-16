@@ -9,6 +9,9 @@ import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.Emotions
 import java.util.Locale
 
+/**
+ * Function to launch the speech recognition activity
+ **/
 fun speechRecognition(
     activityResultLauncher: ActivityResultLauncher<Intent>
 ) {

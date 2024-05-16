@@ -17,7 +17,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -30,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -38,10 +36,11 @@ import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.entities.EntryData
-import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.ui.components.EntryButtonsRow
 import com.nihil.emotiontag.ui.components.TopBar
 import com.nihil.emotiontag.util.EmotionClassifier
+import com.nihil.emotiontag.util.LocalEntryViewModel
+import com.nihil.emotiontag.util.LocalNavController
 import com.nihil.emotiontag.util.getEmotionText
 import com.nihil.emotiontag.util.saveToDatabase
 import com.nihil.emotiontag.util.speechRecognition
@@ -52,9 +51,18 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.UUID
 
+/**
+ * App Screen
+ *
+ * Screen for editing an entry of the journal
+ *
+ * @param id the id of the entry to modify in string format
+ **/
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun EditEntryScreen(navController: NavController, entryViewModel: EntryViewModel, id: String) {
+fun EditEntryScreen(id: String) {
+    val navController = LocalNavController.current
+    val entryViewModel = LocalEntryViewModel.current
     val entry by entryViewModel.getEntryById(UUID.fromString(id)).observeAsState()
 
     val speechPermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
@@ -96,8 +104,8 @@ fun EditEntryScreen(navController: NavController, entryViewModel: EntryViewModel
                 title = stringResource(id = R.string.scrTitleEditEntry),
                 onNavigationIconClick = {
                     if (!isProcessing) {
-                        navController.navigate(ScreenData.EntriesScreen.title) {
-                            popUpTo(ScreenData.EntriesScreen.title) {
+                        navController.navigate(ScreenData.EntriesScreenData.route) {
+                            popUpTo(ScreenData.EntriesScreenData.route) {
                                 inclusive = true
                             }
                         }

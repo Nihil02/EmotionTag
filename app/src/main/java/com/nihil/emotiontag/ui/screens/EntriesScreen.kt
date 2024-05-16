@@ -14,22 +14,28 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.ScreenData
-import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.ui.components.EntriesList
 import com.nihil.emotiontag.ui.components.TopBar
+import com.nihil.emotiontag.util.LocalEntryViewModel
+import com.nihil.emotiontag.util.LocalNavController
 
+/**
+ * App Screen
+ *
+ * Screen for seeing all the journal's entry
+ **/
 @Composable
-fun EntriesScreen(navController: NavController, entryViewModel: EntryViewModel) {
-    val entries by entryViewModel.entries.observeAsState(emptyList())
+fun EntriesScreen() {
+    val navController = LocalNavController.current
+    val entries by LocalEntryViewModel.current.entries.observeAsState(emptyList())
 
     Scaffold(
         topBar = { TopBar(title = stringResource(R.string.scrTitleEntries)) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(ScreenData.AddEntryScreen.title) },
+                onClick = { navController.navigate(ScreenData.AddEntryScreenData.route) },
             ) {
                 Icon(Icons.Filled.Add, "Add an entry")
             }
@@ -41,7 +47,7 @@ fun EntriesScreen(navController: NavController, entryViewModel: EntryViewModel) 
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            EntriesList(entries, navController, entryViewModel)
+            EntriesList(entries)
         }
     }
 }

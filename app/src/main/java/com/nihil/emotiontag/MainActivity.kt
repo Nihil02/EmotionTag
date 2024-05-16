@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,8 @@ import com.nihil.emotiontag.ui.screens.EditEntryScreen
 import com.nihil.emotiontag.ui.screens.EntriesScreen
 import com.nihil.emotiontag.ui.screens.ShowEntryScreen
 import com.nihil.emotiontag.ui.theme.EmotionTagTheme
+import com.nihil.emotiontag.util.LocalEntryViewModel
+import com.nihil.emotiontag.util.LocalNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,48 +29,38 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val navController = rememberNavController()
-
             EmotionTagTheme {
-                NavHost(navController, startDestination = ScreenData.EntriesScreen.title) {
-                    composable(ScreenData.EntriesScreen.title) {
-                        EntriesScreen(
-                            navController,
-                            entryViewModel
-                        )
-                    }
-                    composable(ScreenData.AddEntryScreen.title) {
-                        AddEntryScreen(
-                            navController,
-                            entryViewModel
-                        )
-                    }
-                    composable(
-                        ScreenData.ShowEntryScreen.title + "/{id}",
-                        arguments = listOf(navArgument(name = "id") {
-                            type = NavType.StringType
-                        })
-                    ) {
-                        it.arguments?.getString("id")?.let { id ->
-                            ShowEntryScreen(
-                                navController,
-                                entryViewModel,
-                                id
-                            )
+                val navController = rememberNavController()
+                CompositionLocalProvider(
+                    LocalEntryViewModel provides entryViewModel,
+                    LocalNavController provides navController
+                ) {
+                    NavHost(navController, startDestination = ScreenData.EntriesScreenData.route) {
+                        composable(ScreenData.EntriesScreenData.route) {
+                            EntriesScreen()
                         }
-                    }
-                    composable(
-                        ScreenData.UpdateEntryScreen.title + "/{id}",
-                        arguments = listOf(navArgument(name = "id") {
-                            type = NavType.StringType
-                        })
-                    ) {
-                        it.arguments?.getString("id")?.let { id ->
-                            EditEntryScreen(
-                                navController,
-                                entryViewModel,
-                                id
-                            )
+                        composable(ScreenData.AddEntryScreenData.route) {
+                            AddEntryScreen()
+                        }
+                        composable(
+                            ScreenData.ShowEntryScreenData.route + "/{id}",
+                            arguments = listOf(navArgument(name = "id") {
+                                type = NavType.StringType
+                            })
+                        ) {
+                            it.arguments?.getString("id")?.let { id ->
+                                ShowEntryScreen(id)
+                            }
+                        }
+                        composable(
+                            ScreenData.UpdateEntryScreenData.route + "/{id}",
+                            arguments = listOf(navArgument(name = "id") {
+                                type = NavType.StringType
+                            })
+                        ) {
+                            it.arguments?.getString("id")?.let { id ->
+                                EditEntryScreen(id)
+                            }
                         }
                     }
                 }

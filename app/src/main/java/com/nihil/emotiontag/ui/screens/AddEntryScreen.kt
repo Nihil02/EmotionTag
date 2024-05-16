@@ -17,7 +17,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -29,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -37,10 +35,11 @@ import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.entities.EntryData
-import com.nihil.emotiontag.database.vm.EntryViewModel
 import com.nihil.emotiontag.ui.components.EntryButtonsRow
 import com.nihil.emotiontag.ui.components.TopBar
 import com.nihil.emotiontag.util.EmotionClassifier
+import com.nihil.emotiontag.util.LocalEntryViewModel
+import com.nihil.emotiontag.util.LocalNavController
 import com.nihil.emotiontag.util.getEmotionText
 import com.nihil.emotiontag.util.saveToDatabase
 import com.nihil.emotiontag.util.speechRecognition
@@ -49,11 +48,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * App Screen
+ *
+ * Screen for adding a new entry in the journal
+ **/
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel) {
+fun AddEntryScreen() {
     val speechPermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
     val context = LocalContext.current
+    val navController = LocalNavController.current
+    val entryViewModel = LocalEntryViewModel.current
 
     var title by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
@@ -86,8 +92,8 @@ fun AddEntryScreen(navController: NavController, entryViewModel: EntryViewModel)
                 title = stringResource(id = R.string.scrTitleAddEntry),
                 onNavigationIconClick = {
                     if (!isProcessing) {
-                        navController.navigate(ScreenData.EntriesScreen.title) {
-                            popUpTo(ScreenData.EntriesScreen.title) {
+                        navController.navigate(ScreenData.EntriesScreenData.route) {
+                            popUpTo(ScreenData.EntriesScreenData.route) {
                                 inclusive = true
                             }
                         }

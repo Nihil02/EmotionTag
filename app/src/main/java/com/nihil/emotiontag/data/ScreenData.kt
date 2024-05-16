@@ -1,8 +1,9 @@
 package com.nihil.emotiontag.data
 
-enum class ScreenData(val title: String) {
-    EntriesScreen("entries"),
-    AddEntryScreen("addEntry"),
-    UpdateEntryScreen("updateEntry"),
-    ShowEntryScreen("showEntry"),
+/** Data about the apps screens.**/
+enum class ScreenData(val route: String) {
+    EntriesScreenData("entries"),
+    AddEntryScreenData("addEntry"),
+    UpdateEntryScreenData("updateEntry"),
+    ShowEntryScreenData("showEntry"),
 }

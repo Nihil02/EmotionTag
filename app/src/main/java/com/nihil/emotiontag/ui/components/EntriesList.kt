@@ -14,18 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.nihil.emotiontag.R
-import com.nihil.emotiontag.database.dao.EntryDao
 import com.nihil.emotiontag.database.entities.EntryData
-import com.nihil.emotiontag.database.repository.EntryRepository
-import com.nihil.emotiontag.database.vm.EntryViewModel
 
 @Composable
-fun EntriesList(entries: List<EntryData>, navController: NavController, entryViewModel: EntryViewModel) {
+fun EntriesList(entries: List<EntryData>) {
     if (entries.isEmpty()) {
         Box(
             modifier = Modifier
@@ -46,7 +40,7 @@ fun EntriesList(entries: List<EntryData>, navController: NavController, entryVie
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(entries) { entry ->
-                Entry(entry, navController, entryViewModel)
+                Entry(entry)
             }
         }
     }

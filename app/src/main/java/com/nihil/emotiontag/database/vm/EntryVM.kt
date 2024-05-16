@@ -7,29 +7,46 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.nihil.emotiontag.database.entities.EntryData
 import com.nihil.emotiontag.database.repository.EntryRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 class EntryViewModel(private val repository: EntryRepository) : ViewModel() {
+    /**The list of all entries of the journal as [LiveData] [List] of [EntryData]**/
     val entries = repository.entries.asLiveData()
 
+    /**
+     * Function to search an specific entry by id
+     *
+     * @param id the id of the entry
+     * @return the [EntryData] that coincides with the id as [LiveData]
+     **/
     fun getEntryById(id: UUID): LiveData<EntryData> {
         return repository.getEntryById(id).asLiveData()
     }
 
+    /**
+     * Function to insert a new [EntryData] in the database
+     *
+     * @param entryData the entry to insert
+     **/
     fun insertEntry(entryData: EntryData) = viewModelScope.launch {
         repository.insertEntry(entryData)
     }
 
+    /**
+     * Function to delete an [EntryData] in the database
+     *
+     * @param entryData the entry to delete
+     **/
     fun deleteEntry(entryData: EntryData) = viewModelScope.launch {
         repository.deleteEntry(entryData)
     }
 }
 
+/**
+ * This class implements the ViewModelProvider.Factory interface and is used to instantiate
+ * EntryViewModel objects.
+ **/
 class EntryViewModelFactory(private val repository: EntryRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EntryViewModel::class.java)) {
@@ -39,4 +56,3 @@ class EntryViewModelFactory(private val repository: EntryRepository) : ViewModel
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-

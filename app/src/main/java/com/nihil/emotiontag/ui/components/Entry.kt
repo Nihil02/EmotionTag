@@ -1,6 +1,5 @@
 package com.nihil.emotiontag.ui.components
 
-import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,23 +31,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.nihil.emotiontag.EmotionTagApplication
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.database.entities.EntryData
-import com.nihil.emotiontag.database.vm.EntryViewModel
-import com.nihil.emotiontag.database.vm.EntryViewModelFactory
+import com.nihil.emotiontag.util.LocalEntryViewModel
+import com.nihil.emotiontag.util.LocalNavController
 import com.nihil.emotiontag.util.deleteFromDatabase
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun Entry(entryData: EntryData, navController: NavController, entryViewModel: EntryViewModel) {
+fun Entry(entryData: EntryData) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val navController = LocalNavController.current
+    val entryViewModel = LocalEntryViewModel.current
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -58,7 +57,7 @@ fun Entry(entryData: EntryData, navController: NavController, entryViewModel: En
             .height(180.dp)
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { navController.navigate(ScreenData.ShowEntryScreen.title + "/" + entryData.id.toString() + "") },
+                onClick = { navController.navigate(ScreenData.ShowEntryScreenData.route + "/" + entryData.id.toString() + "") },
                 onLongClick = {
                     showBottomSheet = true
                 },
@@ -114,7 +113,7 @@ fun Entry(entryData: EntryData, navController: NavController, entryViewModel: En
                             scope.launch { sheetState.hide() }.invokeOnCompletion {
                                 if (!sheetState.isVisible) {
                                     showBottomSheet = false
-                                    navController.navigate(ScreenData.UpdateEntryScreen.title + "/" + entryData.id.toString() + "")
+                                    navController.navigate(ScreenData.UpdateEntryScreenData.route + "/" + entryData.id.toString() + "")
                                 }
                             }
                         }) {
