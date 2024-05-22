@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -31,7 +30,8 @@ import com.nihil.emotiontag.util.LocalNavController
 @Composable
 fun EntriesScreen() {
     val navController = LocalNavController.current
-    val entries by LocalEntryViewModel.current.entries.observeAsState(emptyList())
+    val aux by LocalEntryViewModel.current.entries.observeAsState(emptyList())
+    val entries = aux.sortedByDescending { it.date }
 
     Scaffold(
         topBar = { TopBar(title = stringResource(R.string.scrTitleEntries)) },

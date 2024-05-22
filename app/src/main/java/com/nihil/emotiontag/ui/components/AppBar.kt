@@ -72,10 +72,14 @@ fun BottomBar() {
                         painter = painterResource(R.drawable.ic_entries),
                         contentDescription = "Entries"
                     )
-                    Text(
-                        text = stringResource(R.string.scrTitleEntries),
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    if (navController.currentDestination != null
+                        && navController.currentDestination!!.route
+                        != ScreenData.EntriesScreenData.route){
+                        Text(
+                            text = stringResource(R.string.scrTitleEntries),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
                 }
             }
             IconButton(
@@ -91,10 +95,15 @@ fun BottomBar() {
                         painter = painterResource(R.drawable.ic_statistics),
                         contentDescription = "Statistics"
                     )
-                    Text(
-                        text = stringResource(R.string.scrTiitleStatistics),
-                        fontWeight = FontWeight.SemiBold
-                    )
+
+                    if (navController.currentDestination != null
+                        && navController.currentDestination!!.route
+                        != ScreenData.StatisticsScreenData.route) {
+                        Text(
+                            text = stringResource(R.string.scrTiitleStatistics),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
                 }
             }
         }

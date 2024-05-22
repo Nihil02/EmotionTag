@@ -15,6 +15,8 @@
     <string name="srcTitleShowEntry">A precious memory</string>
     <string name="btnModalEdit">Edit</string>
     <string name="btnModalDelete">Delete</string>
+    <string name="btnReadText">Read</string>
+    <string name="lblStatisticsWeek">Your weekly emotional chart</string>
 
     <!--Screen names-->
     <string name="scrTitleEntries">Entries</string>
@@ -36,5 +38,4 @@
     <string name="msgSavedToDatabase">Saved</string>
     <string name="msgFailedToSaved">Failed to save :(</string>
     <string name="msgDeletedFromDatabase">Deleted</string>
-    <string name="btnReadText">Read</string>
 </resources>
