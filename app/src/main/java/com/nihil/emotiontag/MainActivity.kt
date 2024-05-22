@@ -17,6 +17,7 @@ import com.nihil.emotiontag.ui.screens.AddEntryScreen
 import com.nihil.emotiontag.ui.screens.EditEntryScreen
 import com.nihil.emotiontag.ui.screens.EntriesScreen
 import com.nihil.emotiontag.ui.screens.ShowEntryScreen
+import com.nihil.emotiontag.ui.screens.StatisticsScreen
 import com.nihil.emotiontag.ui.theme.EmotionTagTheme
 import com.nihil.emotiontag.util.LocalEntryViewModel
 import com.nihil.emotiontag.util.LocalNavController
@@ -38,6 +39,9 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController, startDestination = ScreenData.EntriesScreenData.route) {
                         composable(ScreenData.EntriesScreenData.route) {
                             EntriesScreen()
+                        }
+                        composable(ScreenData.StatisticsScreenData.route) {
+                            StatisticsScreen()
                         }
                         composable(ScreenData.AddEntryScreenData.route) {
                             AddEntryScreen()

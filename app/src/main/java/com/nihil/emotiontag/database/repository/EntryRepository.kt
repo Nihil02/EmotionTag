@@ -1,6 +1,7 @@
 package com.nihil.emotiontag.database.repository
 
 import androidx.annotation.WorkerThread
+import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.database.dao.EntryDao
 import com.nihil.emotiontag.database.entities.EntryData
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,10 @@ class EntryRepository(private val entryDao: EntryDao) {
 
     fun getEntryById(id: UUID): Flow<EntryData> {
         return entryDao.getEntryById(id)
+    }
+
+    fun getLastWeekEmotions(): Flow<List<Int>> {
+        return entryDao.getLastWeekEmotions()
     }
 
     @WorkerThread

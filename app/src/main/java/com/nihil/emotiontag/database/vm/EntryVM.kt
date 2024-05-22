@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.database.entities.EntryData
 import com.nihil.emotiontag.database.repository.EntryRepository
 import kotlinx.coroutines.launch
@@ -22,6 +23,15 @@ class EntryViewModel(private val repository: EntryRepository) : ViewModel() {
      **/
     fun getEntryById(id: UUID): LiveData<EntryData> {
         return repository.getEntryById(id).asLiveData()
+    }
+
+    /**
+     * Function to query last week emotions
+     *
+     * @return the list of last week entries' emotions as a [LiveData] [List] of [Int]
+     **/
+    fun getLastWeekEmotions(): LiveData<List<Int>> {
+        return repository.getLastWeekEmotions().asLiveData()
     }
 
     /**

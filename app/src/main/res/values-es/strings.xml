@@ -19,6 +19,7 @@
     <string name="scrTitleEntries">Entradas</string>
     <string name="scrTitleAddEntry">Registrar Entrada</string>
     <string name="scrTitleEditEntry">Editar Entrada</string>
+    <string name="scrTiitleStatistics">Estadísticas</string>
 
     <!--Emotions-->
     <string name="emoJoy">Alegría</string>

@@ -20,6 +20,7 @@
     <string name="scrTitleEntries">Entries</string>
     <string name="scrTitleAddEntry">Add Entry</string>
     <string name="scrTitleEditEntry">Edit Entry</string>
+    <string name="scrTiitleStatistics">Statistics</string>
 
     <!--Emotions-->
     <string name="emoJoy">Joy</string>

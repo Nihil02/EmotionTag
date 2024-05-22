@@ -6,4 +6,5 @@ enum class ScreenData(val route: String) {
     AddEntryScreenData("addEntry"),
     UpdateEntryScreenData("updateEntry"),
     ShowEntryScreenData("showEntry"),
+    StatisticsScreenData("statistics"),
 }
