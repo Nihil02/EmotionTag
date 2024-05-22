@@ -1,6 +1,7 @@
 package com.nihil.emotiontag.ui.screens
 
 import android.print.PrintAttributes
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import com.nihil.emotiontag.R
 import com.nihil.emotiontag.ui.components.BottomBar
 import com.nihil.emotiontag.ui.components.TopBar
 import com.nihil.emotiontag.util.LocalEntryViewModel
+import com.nihil.emotiontag.util.getEmotionColor
 
 /**
  * App Screen
@@ -37,6 +39,8 @@ fun StatisticsScreen() {
     val lastWeekEmotions by LocalEntryViewModel.current.getLastWeekEmotions().observeAsState(
         emptyList()
     )
+
+    Log.i("Emotions", lastWeekEmotions.toString())
 
     Scaffold(
         topBar = { TopBar(title = stringResource(R.string.scrTiitleStatistics)) },
@@ -55,15 +59,13 @@ fun StatisticsScreen() {
                     textAlign = TextAlign.Center
                 )
             } else {
-                val emotions = listOf("Neutral", "Happy", "Sad", "Angry", "Surprised")
-                val colors = listOf(Color.Gray, Color.Yellow, Color.Blue, Color.Red, Color.Green)
-
                 val pieChartData = lastWeekEmotions.mapIndexed { index, count ->
                     PieChartData.Slice(
                         value = count.toFloat(),
-                        color = colors.getOrElse(index) { Color.Gray }
+                        color = getEmotionColor(index)
                     )
                 }
+                Log.i("Emotions", pieChartData.toString())
 
                 Column() {
                     Row(

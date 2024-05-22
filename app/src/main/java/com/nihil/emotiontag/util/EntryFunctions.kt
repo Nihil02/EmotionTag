@@ -4,6 +4,7 @@ import android.content.Intent
 import android.speech.RecognizerIntent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.nihil.emotiontag.R
 import com.nihil.emotiontag.data.Emotions
@@ -38,5 +39,20 @@ fun getEmotionText(emotion: Int): String {
         Emotions.NON_DOMINANT.value -> stringResource(R.string.emoNonDominant)
         Emotions.NONE.value -> stringResource(R.string.emoNone)
         else -> Emotions.ERROR.name
+    }
+}
+
+@Composable
+fun getEmotionColor(emotion: Int): Color {
+    return when (emotion) {
+        Emotions.JOY.value -> Emotions.JOY.color
+        Emotions.SADNESS.value -> Emotions.SADNESS.color
+        Emotions.ANGER.value -> Emotions.ANGER.color
+        Emotions.DISGUST.value -> Emotions.DISGUST.color
+        Emotions.FEAR.value -> Emotions.FEAR.color
+        Emotions.SURPRISE.value -> Emotions.SURPRISE.color
+        Emotions.NON_DOMINANT.value -> Emotions.NON_DOMINANT.color
+        Emotions.NONE.value -> Emotions.NONE.color
+        else -> Emotions.ERROR.color
     }
 }
