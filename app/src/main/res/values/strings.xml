@@ -36,4 +36,5 @@
     <string name="msgSavedToDatabase">Saved</string>
     <string name="msgFailedToSaved">Failed to save :(</string>
     <string name="msgDeletedFromDatabase">Deleted</string>
+    <string name="btnReadText">Read</string>
 </resources>

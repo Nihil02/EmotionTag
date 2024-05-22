@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +24,7 @@ import com.nihil.emotiontag.data.ScreenData
 import com.nihil.emotiontag.ui.components.TopBar
 import com.nihil.emotiontag.util.LocalEntryViewModel
 import com.nihil.emotiontag.util.LocalNavController
+import com.nihil.emotiontag.util.VoiceOutputManager
 import com.nihil.emotiontag.util.getEmotionText
 import java.util.UUID
 
@@ -36,6 +39,9 @@ import java.util.UUID
 fun ShowEntryScreen(id: String) {
     val navController = LocalNavController.current
     val entry by LocalEntryViewModel.current.getEntryById(UUID.fromString(id)).observeAsState()
+    val context = LocalContext.current
+    val voiceManager = VoiceOutputManager()
+    voiceManager.init(LocalContext.current)
 
     Scaffold(
         topBar = {
@@ -75,6 +81,9 @@ fun ShowEntryScreen(id: String) {
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                     )
+                    Button(onClick = { voiceManager.speak(entry!!.text) }) {
+                        Text(text = stringResource(id = R.string.btnReadText))
+                    }
                     Text(
                         text = entry!!.text,
                         textAlign = TextAlign.Center,

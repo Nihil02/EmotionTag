@@ -35,4 +35,5 @@
     <string name="msgSavedToDatabase">Guardado</string>
     <string name="msgFailedToSaved">No guardado :(</string>
     <string name="msgDeletedFromDatabase">Borrado</string>
+    <string name="btnReadText">Nárralo</string>
 </resources>
