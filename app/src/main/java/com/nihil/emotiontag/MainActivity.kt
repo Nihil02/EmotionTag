@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -36,7 +38,12 @@ class MainActivity : ComponentActivity() {
                     LocalEntryViewModel provides entryViewModel,
                     LocalNavController provides navController
                 ) {
-                    NavHost(navController, startDestination = ScreenData.EntriesScreenData.route) {
+                    NavHost(
+                        navController,
+                        startDestination = ScreenData.EntriesScreenData.route,
+                        enterTransition = { EnterTransition.None },
+                        exitTransition = { ExitTransition.None }
+                    ) {
                         composable(ScreenData.EntriesScreenData.route) {
                             EntriesScreen()
                         }

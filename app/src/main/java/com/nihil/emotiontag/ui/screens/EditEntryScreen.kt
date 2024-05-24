@@ -1,6 +1,7 @@
 package com.nihil.emotiontag.ui.screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.speech.RecognizerIntent
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -51,13 +52,6 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.UUID
 
-/**
- * App Screen
- *
- * Screen for editing an entry of the journal
- *
- * @param id the id of the entry to modify in string format
- **/
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun EditEntryScreen(id: String) {
@@ -68,21 +62,18 @@ fun EditEntryScreen(id: String) {
     val speechPermissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
     val context = LocalContext.current
 
-    val (title, setTitle) = remember(entry) { mutableStateOf(entry?.title ?: "") }
-    val (text, setText) = remember(entry) { mutableStateOf(entry?.text ?: "") }
-    val (emotion, setEmotion) = remember(entry) {
-        mutableIntStateOf(
-            entry?.emotion ?: Emotions.NONE.value
-        )
+    var title by remember(entry) { mutableStateOf(entry?.title ?: "") }
+    var text by remember(entry) { mutableStateOf(entry?.text ?: "") }
+    var emotion by remember(entry) {
+        mutableIntStateOf(entry?.emotion ?: Emotions.NONE.value)
     }
     val date = entry?.date ?: LocalDate.now().toString()
     var isRecording by remember { mutableStateOf(false) }
     var isProcessing by remember { mutableStateOf(false) }
 
-    val isReady by remember {
-        derivedStateOf {
-            title.isNotBlank() && text.isNotBlank() && emotion != Emotions.NONE.value && emotion != Emotions.ERROR.value
-        }
+    @SuppressLint("UnrememberedMutableState")
+    val isReady by derivedStateOf {
+        title.isNotBlank() && text.isNotBlank() && emotion != Emotions.NONE.value && emotion != Emotions.ERROR.value
     }
 
     val activityResultLauncher = rememberLauncherForActivityResult(
@@ -92,7 +83,7 @@ fun EditEntryScreen(id: String) {
                 val res =
                     result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.get(0)
                         ?: ""
-                setText(res)
+                text = res
             }
             isRecording = false
         }
@@ -125,17 +116,16 @@ fun EditEntryScreen(id: String) {
             ) {
                 TextField(
                     value = title,
-                    onValueChange = setTitle,
+                    onValueChange = { newTitle -> title = newTitle },
                     label = { Text(stringResource(R.string.lblEntryTitle)) },
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f),
+                    modifier = Modifier.fillMaxWidth(0.8f),
                     singleLine = true
                 )
 
                 TextField(
                     placeholder = { Text("") },
                     value = text,
-                    onValueChange = setText,
+                    onValueChange = { newText -> text = newText },
                     label = { Text(stringResource(R.string.lblEntryText)) },
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
@@ -183,7 +173,7 @@ fun EditEntryScreen(id: String) {
                         CoroutineScope(Dispatchers.IO).launch {
                             val analyzedEmotion = EmotionClassifier(context).analyze(text)
                             withContext(Dispatchers.Main) {
-                                setEmotion(analyzedEmotion.value)
+                                emotion = analyzedEmotion.value
                                 isProcessing = false
                             }
                         }

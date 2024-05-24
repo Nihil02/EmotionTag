@@ -39,7 +39,6 @@ import java.util.UUID
 fun ShowEntryScreen(id: String) {
     val navController = LocalNavController.current
     val entry by LocalEntryViewModel.current.getEntryById(UUID.fromString(id)).observeAsState()
-    val context = LocalContext.current
     val voiceManager = VoiceOutputManager()
     voiceManager.init(LocalContext.current)
 
@@ -48,6 +47,7 @@ fun ShowEntryScreen(id: String) {
             TopBar(
                 title = stringResource(id = R.string.srcTitleShowEntry),
                 onNavigationIconClick = {
+                    voiceManager.destroy()
                     navController.navigate(ScreenData.EntriesScreenData.route) {
                         popUpTo(ScreenData.EntriesScreenData.route) {
                             inclusive = true
