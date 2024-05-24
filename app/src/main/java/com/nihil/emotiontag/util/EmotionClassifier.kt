@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.nihil.emotiontag.data.Emotions
 import java.io.IOException
 import java.nio.charset.StandardCharsets
+import java.util.Locale
 
 /**Object to represent a word and its associated values**/
 data class EmotionScores(
@@ -38,11 +39,17 @@ class EmotionClassifier(private val context: Context) {
      * @return the dictionary converted in an list of [EmotionScores] objects
      **/
     private fun loadDictionary(): List<EmotionScores>? {
+        var filename = "data-eng.json"
         return try {
-            context.assets.open("data-spa.json").use { inputStream ->
+            if (Locale.getDefault().getLanguage() == "es") {
+                filename = "data-spa.json"
+            }
+
+            context.assets.open(filename).use { inputStream ->
                 val jsonString = inputStream.readBytes().toString(StandardCharsets.UTF_8)
                 gson.fromJson(jsonString, emotionListType)
             }
+
         } catch (e: IOException) {
             println("Error: ${e.message}")
             null
