@@ -1,7 +1,6 @@
 package com.nihil.emotiontag.database.repository
 
 import androidx.annotation.WorkerThread
-import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.database.dao.EntryDao
 import com.nihil.emotiontag.database.entities.EntryData
 import kotlinx.coroutines.flow.Flow

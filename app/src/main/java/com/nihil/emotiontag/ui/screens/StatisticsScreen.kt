@@ -96,7 +96,7 @@ fun StatisticsScreen() {
                         )
                     }
 
-                    emotionsCount.keys.forEachIndexed { index, emotion ->
+                    emotionsCount.keys.forEachIndexed { _, emotion ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(0.8f),

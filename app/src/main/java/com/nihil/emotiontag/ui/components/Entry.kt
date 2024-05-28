@@ -78,7 +78,7 @@ fun Entry(entryData: EntryData) {
             )
             Text(
                 modifier = Modifier.weight(2f),
-                text = entryData.title,
+                text = entryData.title.take(20),
                 textAlign = TextAlign.Center,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -87,12 +87,11 @@ fun Entry(entryData: EntryData) {
             )
             Text(
                 modifier = Modifier.weight(3f),
-                text = entryData.text,
-                textAlign = TextAlign.Center,
+                text = entryData.text.take(300),
+                textAlign = TextAlign.Left,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 3,
             )
-
         }
 
         if (showBottomSheet) {
@@ -132,7 +131,6 @@ fun Entry(entryData: EntryData) {
                             Text(stringResource(id = R.string.btnModalDelete))
                         }
                     }
-
                     Spacer(modifier = Modifier.height(50.dp))
                 }
             }

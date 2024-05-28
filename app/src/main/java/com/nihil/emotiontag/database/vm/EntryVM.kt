@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.nihil.emotiontag.data.Emotions
 import com.nihil.emotiontag.database.entities.EntryData
 import com.nihil.emotiontag.database.repository.EntryRepository
 import kotlinx.coroutines.launch
